@@ -2,6 +2,11 @@ from helper.utils import *
 
 
 DAY = 2
+opp_map = {
+    "A": "rock",
+    "B": "paper",
+    "C": "scissor"
+}
 
 
 @time_function
@@ -14,74 +19,57 @@ def prepare_data():
     return rounds
 
 
-def score_round(opp, me):
-    vals = {"rock": 1, "paper": 2, "scissor": 3}
-    return vals[me] + get_score(opp, me)
-
-
-def get_score(opp, me):
-    if opp == me:
-        return 3
-
-    if opp == "rock" and me == "paper":
-        return 6
-
-    if opp == "rock" and me == "scissor":
-        return 0
-
-    if opp == "paper" and me == "rock":
-        return 0
-
-    if opp == "paper" and me == "scissor":
-        return 6
-
-    if opp == "scissor" and me == "rock":
-        return 6
-
-    if opp == "scissor" and me == "paper":
-        return 0
-
-
 @time_function
 def part_a(data):
-    opp_map = {
-        "A": "rock",
-        "B": "paper",
-        "C": "scissor"
-    }
     me_map = {
         "X": "rock",
         "Y": "paper",
         "Z": "scissor"
     }
-    return sum([score_round(opp_map[opp], me_map[me]) for opp, me in data])
+    return sum([get_score(opp_map[opp], me_map[me]) for opp, me in data])
 
 
 @time_function
 def part_b(data):
-    opp_map = {
-        "A": "rock",
-        "B": "paper",
-        "C": "scissor"
-    }
-    choices = {
+    strategies = {
         "rock": {
-            "x": "scissor",
-            "y": "rock",
-            "z": "paper"
+            "X": "scissor",
+            "Y": "rock",
+            "Z": "paper"
         },
         "paper": {
-            "x": "rock",
-            "y": "paper",
-            "z": "scissor"
+            "X": "rock",
+            "Y": "paper",
+            "Z": "scissor"
         },
         "scissor": {
-            "x": "paper",
-            "y": "scissor",
-            "z": "rock"
+            "X": "paper",
+            "Y": "scissor",
+            "Z": "rock"
         }
     }
-    return sum([score_round(opp_map[opp], choices[opp_map[opp]][strat.lower()]) for opp, strat in data])
+    return sum([get_score(opp_map[opp], strategies[opp_map[opp]][strategy]) for opp, strategy in data])
+
+
+def get_score(opp, me):
+    ch_score = {"rock": 1, "paper": 2, "scissor": 3}
+    score = ch_score[me]
+    match (opp, me):
+        case _ if opp == me:
+            score += 3
+        case ("rock", "paper"):
+            score += 6
+        case ("rock", "scissor"):
+            score += 0
+        case ("paper", "rock"):
+            score += 0
+        case ("paper", "scissor"):
+            score += 6
+        case ("scissor", "rock"):
+            score += 6
+        case ("scissor", "paper"):
+            score += 0
+    return score
 
 
 def main():
