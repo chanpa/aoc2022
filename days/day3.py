@@ -9,8 +9,9 @@ def prepare_data():
     raw_data = parse_file_rows_to_list(DAY)
     sacks = []
     for sack in raw_data:
-        compartment_a = sack[:int(len(sack)/2)]
-        compartment_b = sack[int(len(sack)/2):]
+        middle = int(len(sack)/2)
+        compartment_a = sack[:middle]
+        compartment_b = sack[middle:]
         sacks.append((compartment_a, compartment_b))
     return sacks
 
@@ -18,7 +19,6 @@ def prepare_data():
 @time_function
 def part_a(data):
     duplicates = _find_duplicate_items(data)
-    print(duplicates)
     return _score_items(duplicates)
 
 
@@ -41,7 +41,7 @@ def _find_badges(sacks):
         elf1 = sacks[i - 2]
         elf2 = sacks[i - 1]
         elf3 = sacks[i]
-        badges += set(set(elf1).intersection(elf2)).intersection(elf3)
+        badges += set(elf1).intersection(elf2).intersection(elf3)
     return badges
 
 
