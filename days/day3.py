@@ -48,11 +48,8 @@ def _find_badges(sacks):
 def _score_items(items):
     score = 0
     for item in items:
-        v = ord(item)
-        if v <= 90:
-            score += v - 38
-        else:
-            score += v - 96
+        offset = 38 if item.isupper() else 96
+        score += ord(item) - offset
     return score
 
 
