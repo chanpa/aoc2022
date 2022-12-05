@@ -1,5 +1,4 @@
 from helper.utils import *
-from collections import defaultdict
 import re
 
 
@@ -11,24 +10,20 @@ pattern_moves = re.compile("\d+")
 @time_function
 def prepare_data():
     raw_data = parse_file_rows_to_list(DAY)
-    rows = []
-    for row in raw_data:
-        if not row:
-            break
-        rows.append(pattern_start.findall(row))
-
-    columns = defaultdict(list)
-    for row in reversed(rows):
-        for i, col in enumerate(row):
-            if len(col) == 1:
-                columns[i + 1].append(col)
-
     moves = []
-    for row in raw_data:
+    columns = [[] for _ in range(9)]
+    for row in reversed(raw_data):
         if row.startswith("move"):
-            moves.append([int(n) for n in pattern_moves.findall(row)])
+            move = [int(n) for n in pattern_moves.findall(row)]
+            move[1] -= 1
+            move[2] -= 1
+            moves.append(move)
+        elif row := pattern_start.findall(row):
+            for i, crate_tag in enumerate(row):
+                if len(crate_tag) == 1:
+                    columns[i].append(crate_tag)
 
-    return columns, moves
+    return columns, reversed(moves)
 
 
 @time_function
@@ -61,7 +56,7 @@ def _execute_moves(columns, moves, move_all=False):
 def _get_top_crates(arrangement):
     return "".join([
         col[-1]
-        for _, col in arrangement.items()
+        for col in arrangement
     ])
 
 
