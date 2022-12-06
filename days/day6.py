@@ -6,20 +6,25 @@ DAY = 6
 
 @time_function
 def prepare_data():
-    raw_data = parse_file_rows_to_list(DAY, output_type=str)
-    return raw_data
+    raw_data = parse_file_rows_to_list(DAY)
+    return raw_data[0]
 
 
 @time_function
 def part_a(data):
-    answer = data
-    return answer
+    return _find_marker(data)
 
 
 @time_function
 def part_b(data):
-    answer = data
-    return answer
+    return _find_marker(data, window=14)
+
+
+def _find_marker(signal, window=4):
+    for i in range(window - 1, len(signal)):
+        chars = set(signal[i - window + 1:i + 1])
+        if len(chars) == window:
+            return i + 1
 
 
 def main():
