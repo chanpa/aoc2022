@@ -67,13 +67,9 @@ def scenic_score(x, y, treemap):
         for i in range(1, 1000):
             otree_y = y + (y_dir * i)
             otree_x = x + (x_dir * i)
-            if otree_x < 0:
+            if otree_x < 0 or otree_y < 0:
                 break
-            if otree_x >= len(treemap[0]):
-                break
-            if otree_y < 0:
-                break
-            if otree_y >= len(treemap[0]):
+            if otree_x >= len(treemap[0]) or otree_y >= len(treemap[0]):
                 break
             otree = treemap[otree_y][otree_x]
             d_trees += 1

@@ -49,12 +49,12 @@ def _signal_strengths(instructions, interval=40):
 
 def _render_image(instructions):
     screen = [
-        ["."] * 40,
-        ["."] * 40,
-        ["."] * 40,
-        ["."] * 40,
-        ["."] * 40,
-        ["."] * 40,
+        [" "] * 40,
+        [" "] * 40,
+        [" "] * 40,
+        [" "] * 40,
+        [" "] * 40,
+        [" "] * 40,
     ]
     cycle = 0
     x = 1
@@ -63,14 +63,14 @@ def _render_image(instructions):
             case ["noop"]:
                 screen_x, screen_y = get_screen_pixel(cycle)
                 if screen_x in range(x - 1, x + 2):
-                    screen[screen_y][screen_x] = "#"
+                    screen[screen_y][screen_x] = "█"
                 cycle += 1
 
             case ["addx", v]:
                 for _ in range(2):
                     screen_x, screen_y = get_screen_pixel(cycle)
                     if screen_x in range(x - 1, x + 2):
-                        screen[screen_y][screen_x] = "#"
+                        screen[screen_y][screen_x] = "█"
                     cycle += 1
                 x += int(v)
 
