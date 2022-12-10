@@ -1,6 +1,6 @@
 from helper.utils import *
 from functools import reduce
-from operator import mul
+import operator
 
 
 DAY = 8
@@ -76,7 +76,7 @@ def scenic_score(x, y, treemap):
             if otree >= tree:
                 break
         viewing_distances.append(d_trees)
-    return reduce(mul, viewing_distances, 1)
+    return reduce(operator.mul, viewing_distances, 1)
 
 
 def main():
