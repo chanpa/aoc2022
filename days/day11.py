@@ -66,31 +66,28 @@ def prepare_data():
 
 @time_function
 def part_a(monkeys):
-    for _ in range(20):
-        for _, monkey in monkeys.items():
-            for _ in range(len(monkey.items)):
-                new_monkey, item = monkey.throw()
-                monkeys[new_monkey].items.append(item)
-    inspects = [monkey.inspects for _, monkey in monkeys.items()]
-    inspects.sort()
+    inspects = monkey_business(monkeys)
     return inspects[-1] * inspects[-2]
 
 
 @time_function
 def part_b(monkeys):
+    inspects = monkey_business(monkeys, rounds=10_000, extra_worried=True)
+    return inspects[-1] * inspects[-2]
+
+
+def monkey_business(monkeys, rounds=20, extra_worried=False):
     factor = 1
     for _, monkey in monkeys.items():
         factor *= monkey.test["divisor"]
 
-    for r in range(10_000):
-        for _, monkey in monkeys.items():
+    for r in range(rounds):
+        for monkey in monkeys.values():
             for _ in range(len(monkey.items)):
-                new_monkey, item = monkey.throw(extra_worried=True)
+                new_monkey, item = monkey.throw(extra_worried=extra_worried)
                 monkeys[new_monkey].items.append(item % factor)
 
-    inspects = [monkey.inspects for _, monkey in monkeys.items()]
-    inspects.sort()
-    return inspects[-1] * inspects[-2]
+    return sorted([monkey.inspects for monkey in monkeys.values()])
 
 
 def main():
