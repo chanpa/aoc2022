@@ -83,10 +83,71 @@ def get_screen_pixel(cycle):
     return x, y
 
 
+def chat_gpt(input):
+    # Parse the instructions in the program
+    instructions = parse_file_rows_to_list(DAY)
+
+    # Initialize the X register to 1
+    x = 1
+
+    # The current cycle number
+    cycle = 0
+
+    # The total signal strength
+    signal_strength = 0
+
+    # The remaining number of cycles for the current instruction
+    remaining_cycles = 0
+
+    # The next cycle where the signal strength should be checked
+    next_signal_check = 20
+
+    # Loop through each instruction in the program
+    for instruction in instructions:
+        # Increment the cycle number
+        cycle += 1
+
+        # Check if the instruction has finished executing
+        if remaining_cycles > 0:
+            # Decrement the remaining cycles for the instruction
+            remaining_cycles -= 1
+        else:
+            # Parse the instruction
+            parts = instruction.split()
+            op = parts[0]
+
+            # Check if the instruction is a noop
+            if op == "noop":
+                # Do nothing
+                pass
+            elif op == "addx":
+                # Add the value to the X register
+                value = int(parts[1])
+                x += value
+
+                # The addx instruction takes two cycles to execute
+                remaining_cycles = 1
+            else:
+                # Invalid instruction
+                raise ValueError("Invalid instruction: " + instruction)
+
+        # Check if the current cycle is the next cycle where the signal strength should be checked
+        if cycle == next_signal_check:
+            # Calculate the signal strength for this cycle
+            signal_strength += cycle * x
+
+            # Set the next cycle where the signal strength should be checked to 40 cycles after the current cycle
+            next_signal_check += 40
+
+    # Print the final signal strength
+    print("Signal strength:", signal_strength)
+
+
 def main():
     data = prepare_data()
     part_a(data)
     part_b(data)
+    chat_gpt(data)
 
 
 if __name__ == '__main__':
